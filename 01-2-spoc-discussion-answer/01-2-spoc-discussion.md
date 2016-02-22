@@ -6,13 +6,13 @@
 
 ### v9-cpu指令，关键变量描述有误或不全的情况；
 >描述不全：
-ssp: 内核态栈顶
-usp: 用户态栈顶
-cycle: 计数周期
-xcycle: 计数周期对应的pc
-timer: 时钟计时器
-timeout: 超时时间阈值
-detla: 时钟偏移周期（偏移量）
+ -ssp: 内核态栈顶
+ -usp: 用户态栈顶
+ -cycle: 计数周期
+ -xcycle: 计数周期对应的pc
+ -timer: 时钟计时器
+ -timeout: 超时时间阈值
+ -detla: 时钟偏移周期（偏移量）
 
 ### 在v9-cpu中的跳转相关操作是如何实现的；
 >branch指令：判断branch指令条件是否满足，满足则跳转pc为operand0；
