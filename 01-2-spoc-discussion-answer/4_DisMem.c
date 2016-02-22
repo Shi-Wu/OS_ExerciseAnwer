@@ -3,7 +3,6 @@
 
 int MemerySize() { 
   asm(MSIZ); 
-  asm(SL,4);
 }
 
 enum { // page table entry flags
