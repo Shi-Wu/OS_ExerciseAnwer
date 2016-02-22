@@ -1,5 +1,3 @@
-// os2.c -- test various features
-
 #include <u.h>
 
 enum { // page table entry flags
@@ -184,6 +182,10 @@ main()
 
   printf("test page fault write...");
   *(int *)(50<<12) = 5;
+  printf("...ok\n");
+
+  printf("test software trap...");
+  asm(TRAP);
   printf("...ok\n");
 
   halt(0);
