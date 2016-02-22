@@ -29,17 +29,17 @@
 >程序被加载到内存的初始位置（即变量mem头指针所指位置）。栈底sp = memsz - FS_SZ，即为内存大小减去从RAM读入的程序大小的值。
 
 ### 在v9-cpu中如何完成一次内存地址的读写的；
-先通过fsp:辅助判断是否要经过tr/tw的分析。将 sp在host内存中的值（xsp） - sp在host内存中所在页的起始地址值（tsp） 所得的差（v，为实际内存地址）再 >> 12，查看其是否位于 当前读写的页转换表，不存在的话通过rlook()或wlook()函数查看其地址是否位于所有页表目录。均不存在则读写失败；否则，完成读写操作（p为是否存在于页表的标记），修改xsp值（读+8或写-8）。
+>先通过fsp:辅助判断是否要经过tr/tw的分析。将 sp在host内存中的值（xsp） - sp在host内存中所在页的起始地址值（tsp） 所得的差（v，为实际内存地址）再 >> 12，查看其是否位于 当前读写的页转换表，不存在的话通过rlook()或wlook()函数查看其地址是否位于所有页表目录。均不存在则读写失败；否则，完成读写操作（p为是否存在于页表的标记），修改xsp值（读+8或写-8）。
 
 ### 在v9-cpu中如何实现分页机制；
-> 在TLB中，设置了4个1MB大小页转换表（page translation buffer array）
+>在TLB中，设置了4个1MB大小页转换表（page translation buffer array）
  - kernel read page translation table
  - kernel write page translation table
  - user read page translation table
  - user write page translation table
-> 有两个指针tr/tw, tw指向内核态或用户态的read/write　page translation table．
+>有两个指针tr/tw, tw指向内核态或用户态的read/write　page translation table．
  - tr/tw[page number]=phy page number //页帧号
-> 还有一个tpage buffer array, 保存了所有tr/tw中的虚页号，这些虚页号是tr/tw数组中的index
+>还有一个tpage buffer array, 保存了所有tr/tw中的虚页号，这些虚页号是tr/tw数组中的index
  - tpage[tpages++] = v //v是page number
 
 --------------------------------------------------------------------
