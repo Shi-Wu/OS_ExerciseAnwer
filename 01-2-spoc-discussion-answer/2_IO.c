@@ -93,7 +93,6 @@ int g;
 
 char readChar() {
  	asm(BIN);
- 	asm(SL,4);
 }
 
 writeChar( char x ) {
