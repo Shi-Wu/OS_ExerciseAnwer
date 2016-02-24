@@ -140,6 +140,19 @@ root/usr/funcall.c  27:
 
  ```
 - ## 尝试用xem的简单调试功能单步调试代码，回答如下问题：
+
+```
+ gcc -o xem -g -m32 -Ilinux -Iroot/lib root/bin/em.c -lm
+```
+使用上述命令编译出可调试的xem，再使用如下命令进行调试
+```
+h:	print help commands.
+q:	quit.
+c:	continue.
+s:	single step for one instruction.
+i:	display registers.
+x:	display memory, the input address is hex number (e.g x 10000)
+```
    - ### funcall中的堆栈有多大？是内核态堆栈还是用户态堆栈
 	  - 112 用户态
 
