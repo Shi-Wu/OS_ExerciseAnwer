@@ -3,7 +3,7 @@
 
 ## 修改代码，可正常显示小组两位同学的学号（用字符串）
 funcall.c comments
-''' root/usr/funcall.c  1: #include <u.h>
+<code> root/usr/funcall.c  1: #include <u.h>
 root/lib/u.h  1: // u.h
 root/lib/u.h  2: 
 root/lib/u.h  3: // instruction set
@@ -103,7 +103,7 @@ root/usr/funcall.c  25:   asm(HALT);
 00000088  00000000  HALT
 root/usr/funcall.c  26: }
 root/usr/funcall.c  27: 
-0000008c  00000002  LEV   0 //  pc= *sp, sp + = operand0+8, '''
+0000008c  00000002  LEV   0 //  pc= *sp, sp + = operand0+8, <code>
 
  - 生成funcall.c的汇编码，理解其实现并给汇编码写注释
 
