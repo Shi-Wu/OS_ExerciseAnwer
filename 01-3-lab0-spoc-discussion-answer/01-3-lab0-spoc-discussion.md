@@ -36,8 +36,7 @@ main()
 - ## 生成funcall.c的汇编码，理解其实现并给汇编码写注释
 
 ```
-
-  root/usr/funcall.c  1: #include <u.h>
+root/usr/funcall.c  1: #include <u.h>
 root/lib/u.h  1: // u.h
 root/lib/u.h  2:
 root/lib/u.h  3: // instruction set
@@ -130,7 +129,7 @@ root/usr/funcall.c  24:   ret = write(1, "2013011304 2013011305" , 21);
 00000070  00000008  LEAG  0 // a = sp/pc + operand0
 00000074  0000009d  PSHA    // sp -= 8, *sp = a store zhan
 00000078  0000019e  PSHI  1 //store 1
-0000007c  ffff9005  JSR   -112  // save current pc, *sp=pc, sp -= 8; jump to operand0 OR pc+=operand0. 
+0000007c  ffff9005  JSR   -112  // save current pc, *sp=pc, sp -= 8; jump to operand0 OR pc+=operand0.
 00000080  00001801  ENT   24 // sp += operand0
 00000084  00000045  SG    0 // *(global_addr)=a; global_addr = operand0 + pc
 root/usr/funcall.c  25:   asm(HALT);
