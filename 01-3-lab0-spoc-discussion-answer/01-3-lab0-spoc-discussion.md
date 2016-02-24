@@ -1,8 +1,9 @@
-分析和实验funcall.c，需要完成的内容包括： 
+# 分析和实验funcall.c，需要完成的内容包括： 
 -[X]
 
- - 修改代码，可正常显示小组两位同学的学号（用字符串）
-{ {{root/usr/funcall.c  1: #include <u.h>
+## 修改代码，可正常显示小组两位同学的学号（用字符串）
+funcall.c comments
+''' root/usr/funcall.c  1: #include <u.h>
 root/lib/u.h  1: // u.h
 root/lib/u.h  2: 
 root/lib/u.h  3: // instruction set
@@ -57,24 +58,24 @@ root/usr/funcall.c  10: int write(int f, char *s, int n)
 root/usr/funcall.c  11: {
 root/usr/funcall.c  12:   int i;
 root/usr/funcall.c  13:   ret = 1;
-00000010  fffff801  ENT   -8
-00000014  00000123  LI    1
-00000018  00000045  SG    0
+00000010  fffff801  ENT   0xfffffff8 (D -8)		// sp -= 8
+00000014  00000123  LI    0x1 (D 1)				// a = 1
+00000018  00000045  SG    0x0 (D 0)				// *(pc + 0) = a	ret	// *(global_addr)=a; global_addr = operand0 + pc
 root/usr/funcall.c  14:   i=n;
-0000001c  0000200e  LL    32
-00000020  00000440  SL    4
+0000001c  0000200e  LL    0x20 (D 32)			// a = *(32 + sp)	n	// a=content(local_addr) ; local addr= operand0 + sp
+00000020  00000440  SL    0x4 (D 4)				// *(4 + sp) = a	i	// *(local_addr)=a; local_addr = operand0 + sp
 root/usr/funcall.c  15:   while (i--)
 00000024  00000003  JMP   <fwd>
 root/usr/funcall.c  16:     out(f, *s++);
-00000028  0000180e  LL    24
-0000002c  ffffff57  SUBI  -1
-00000030  00001840  SL    24
-00000034  ffffff1f  LXC   -1
-00000038  0000009d  PSHA
-0000003c  0000180e  LL    24
-00000040  0000009d  PSHA
-00000044  ffffb805  JSR   -72
-00000048  00001001  ENT   16
+00000028  0000180e  LL    0x18 (D 24)			// a = *(24 + sp)
+0000002c  ffffff57  SUBI  0xffffffff (D -1)		// a -= (-1)			// a -= operand0
+00000030  00001840  SL    0x18 (D 24)			// *(24 + sp) = a
+00000034  ffffff1f  LXC   0xffffffff (D -1)		// a = *( [-1] )					// a=content(virt_addr); virt_addr = vir2phy(operand0)
+00000038  0000009d  PSHA						//	// sp -= 8, *sp = a
+0000003c  0000180e  LL    0x18 (D 24)			// a = *(24 + sp)
+00000040  0000009d  PSHA						//	// sp -= 8, *sp = a
+00000044  ffffb805  JSR   0xffffffb8 (TO 0x0)	// save current pc, *sp=pc, sp -= 8; jump to operand0 OR pc+=operand0. 
+00000048  00001001  ENT   0x10 (D 16)			// sp += 16				//
 root/usr/funcall.c  17:   return i;
 0000004c  0000040e  LL    4
 00000050  00000157  SUBI  1
@@ -102,8 +103,8 @@ root/usr/funcall.c  25:   asm(HALT);
 00000088  00000000  HALT
 root/usr/funcall.c  26: }
 root/usr/funcall.c  27: 
-0000008c  00000002  LEV   0 //  pc= *sp, sp + = operand0+8, 
-} }}
+0000008c  00000002  LEV   0 //  pc= *sp, sp + = operand0+8, '''
+
  - 生成funcall.c的汇编码，理解其实现并给汇编码写注释
 
 
