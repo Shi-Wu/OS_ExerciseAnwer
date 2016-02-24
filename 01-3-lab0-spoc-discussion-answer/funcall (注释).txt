@@ -1,4 +1,5 @@
-root/usr/funcall.c  1: #include <u.h>
+##funcall.c comments
+>root/usr/funcall.c  1: #include <u.h>
 root/lib/u.h  1: // u.h
 root/lib/u.h  2: 
 root/lib/u.h  3: // instruction set
