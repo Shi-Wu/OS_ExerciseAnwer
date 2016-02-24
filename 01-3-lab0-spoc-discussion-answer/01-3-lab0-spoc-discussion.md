@@ -4,7 +4,8 @@
  - ## 修改代码，可正常显示小组两位同学的学号（用字符串）
 
 ```c
-#include <u.h>
+
+ #include <u.h>
 int ret;
 out(port, val)
 {
@@ -30,7 +31,7 @@ main()
   ret = write(1, "2013011304 2013011305" , 21);
   asm(HALT);
 }
-```
+ ```
 
 - ## 生成funcall.c的汇编码，理解其实现并给汇编码写注释
 
