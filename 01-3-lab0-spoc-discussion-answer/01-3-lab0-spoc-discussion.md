@@ -5,7 +5,7 @@
 
 ```c
 
- #include <u.h>
+#include <u.h>
 int ret;
 out(port, val)
 {
