@@ -157,7 +157,23 @@ syscall(void) {
 ```
 系统调用的类型（中断号）由tf_regs.reg_eax确定，其他参数的传递通过剩下的通用寄存器来赋值得到。
 
- 1. ucore的系统调用中返回结果的传递代码分析。
- 1. 以ucore lab8的answer为例，分析ucore 应用的系统调用编写和含义。
- 1. 以ucore lab8的answer为例，尝试修改并运行ucore OS kernel代码，使其具有类似Linux应用工具`strace`的功能，即能够显示出应用程序发出的系统调用，从而可以分析ucore应用的系统调用执行过程。
+#### 2. 以getpid为例，分析ucore的系统调用中返回结果的传递代码。
+用户态下通过syscall(int num, ...)将中断类型及相关参数通过内联汇编的方式存入，调用sys_getpid(void)函数.
+内核态下，由
+```
+tf->tf_regs.reg_eax = syscalls[num](arg);
+```
+可以看出，实质上是调用内核态下SYS_getpid关键字对应的sys_getpid()函数
+```
+sys_getpid(uint32_t arg[]) {
+    return current->pid;
+}
+```
+来得到当前的pid值，并将其保存至%eax返回。
+
+#### 3. 以ucore lab8的answer为例，分析ucore 应用的系统调用编写和含义。
+
+
+#### 4. 以ucore lab8的answer为例，尝试修改并运行ucore OS kernel代码，使其具有类似Linux应用工具`strace`的功能，即能够显示出应用程序发出的系统调用，从而可以分析ucore应用的系统调用执行过程。
+ 
  
