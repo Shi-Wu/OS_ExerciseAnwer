@@ -172,7 +172,23 @@ sys_getpid(uint32_t arg[]) {
 来得到当前的pid值，并将其保存至%eax返回。
 
 #### 3. 以ucore lab8的answer为例，分析ucore 应用的系统调用编写和含义。
+ucore的系统调用有20几个。主要分为文件操作、进程管理、内存管理等。
+相比linux，ucore的系统调用少很多，主要缺少网络、用户、进程间通信的功能。
+ucore有两套syscall相关的函数。一套供内核使用，一套供用户或函数库使用。
+均使用宏，num，和函数指针列表来区分各种syscall。
+在user/lib/syscall.c中，所有的sys_[action]都转为syscall函数，只是给了不同的参数。
+syscall函数中使用内联汇编的方式，把参数存入寄存器，并给出指令int。
+在kern/syscall/syscall.c中，syscall函数是trap派发来的。通过取出trapframe中的信息，尤其是num。使用num在一个函数指针列表里面找到对应的子程序。
+```
+#libs/unistd.h
+/* syscall number */
+#define SYS_exit            1
+#define SYS_fork            2
+#define SYS_wait            3
+……
 
+tf->tf_regs.reg_eax = syscalls[num](arg);
+```
 
 #### 4. 以ucore lab8的answer为例，尝试修改并运行ucore OS kernel代码，使其具有类似Linux应用工具`strace`的功能，即能够显示出应用程序发出的系统调用，从而可以分析ucore应用的系统调用执行过程。
  大体的思路是在内核态syscall(void)函数内，num值即为系统调用号，将其输出到控制台即可。
