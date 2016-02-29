@@ -49,7 +49,7 @@ BIOS启动受MBR限制，默认无法引导超过2.1TB以上的硬盘。
 ## 3.4 linux系统调用分析
  1. 通过分析[lab1_ex0](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex0.md)了解Linux应用的系统调用编写和含义。(w2l1)
  
-
+系统调用就是用户态的进程调用内核态的函数，会涉及运行态切换和堆栈切换。目的是为了让用户程序访问硬件资源同时又不能破坏操作系统的安全性。
  ```
   + 采分点：说明了objdump，nm，file的大致用途，说明了系统调用的具体含义
   - 答案没有涉及上述两个要点；（0分）
