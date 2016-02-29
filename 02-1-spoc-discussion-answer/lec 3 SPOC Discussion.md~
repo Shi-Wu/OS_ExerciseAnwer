@@ -126,7 +126,11 @@ lab1-ex0.exe: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamica
 	movl	$12,%edx
 	int	$0x80
 ```
-
+- 把中断号传入eax寄存器
+- 把系统调用号出入ebx寄存器
+- 把字符串的起始地址传入ecx寄存器
+- 把字符串的长度传入edx寄存器
+- 最后使用int进行中断
  1. 通过调试[lab1_ex1](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex1.md)了解Linux应用的系统调用执行过程。(w2l1)
  
  - strace用途：strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。

@@ -126,10 +126,10 @@ lab1-ex0.exe: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamica
 	movl	$12,%edx
 	int	$0x80
 ```
-- 把中断号传入a寄存器
-- 把系统调用号出入b寄存器
-- 把字符串的起始地址传入c寄存器
-- 把字符串的长度传入d寄存器
+- 把中断号传入eax寄存器
+- 把系统调用号出入ebx寄存器
+- 把字符串的起始地址传入ecx寄存器
+- 把字符串的长度传入edx寄存器
 - 最后使用int进行中断
  1. 通过调试[lab1_ex1](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex1.md)了解Linux应用的系统调用执行过程。(w2l1)
  
