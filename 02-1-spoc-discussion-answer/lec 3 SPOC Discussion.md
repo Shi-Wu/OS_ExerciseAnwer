@@ -101,14 +101,11 @@ lab1-ex0.exe: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamica
 - arch_prctl设置架构特定的线程状态
 
 - 所以进行printf时，会对用户态的内存进行一个内存映射，然后会打开一个子进程，打开标准输入输出进行读入和输出
-...
+
+
 ## 3.5 ucore系统调用分析
  1. ucore的系统调用中参数传递代码分析。
  1. ucore的系统调用中返回结果的传递代码分析。
  1. 以ucore lab8的answer为例，分析ucore 应用的系统调用编写和含义。
  1. 以ucore lab8的answer为例，尝试修改并运行ucore OS kernel代码，使其具有类似Linux应用工具`strace`的功能，即能够显示出应用程序发出的系统调用，从而可以分析ucore应用的系统调用执行过程。
- 
-## 3.6 请分析函数调用和系统调用的区别
- 1. 请从代码编写和执行过程来说明。
-   1. 说明`int`、`iret`、`call`和`ret`的指令准确功能
  
