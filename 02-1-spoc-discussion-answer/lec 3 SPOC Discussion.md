@@ -8,7 +8,8 @@
  - objdump:用于显示二进制文件信息，-S选项表明其尽可能反汇编出源代码。
 
  - nm:显示关于对象文件、可执行文件以及对象文件库里的符号信息。
-	>对于lab1_ex0，输出的符号信息为：
+>对于lab1_ex0，输出的符号信息为：
+```
 	00000002 a AF_INET
 	0804a040 B __bss_start
 	0804a040 b completed.7181
@@ -67,11 +68,12 @@
 	00000004 a SYS_write
 	0804a040 D __TMC_END__
 	08048320 T __x86.get_pc_thunk.bx
-
+```
  - file:用来识别文件类型，也可用来辨别一些文件的编码格式。它是通过查看文件的头部信息来获取文件类型，而不是像Windows通过扩展名来确定文件类型的。
 >对于lab1_ex0，输出的文件类型信息为：
+```
 lab1-ex0.exe: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=09c35131b234ffb4252c8eff36bfd321e9c18544, not stripped
-...
+```
  - 系统调用就是用户态的进程调用内核态的函数，会涉及运行态切换和堆栈切换。目的是为了让用户程序访问硬件资源同时又不能破坏操作系统的安全性。
 
  - 通过寄存进行参数传递：
