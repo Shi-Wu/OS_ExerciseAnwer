@@ -8,65 +8,65 @@
  - objdump:用于显示二进制文件信息，-S选项表明其尽可能反汇编出源代码。
 
  - nm:显示关于对象文件、可执行文件以及对象文件库里的符号信息。
->对于lab1_ex0，输出的符号信息为：
-00000002 a AF_INET
-0804a040 B __bss_start
-0804a040 b completed.7181
-0804a014 D __data_start
-0804a014 W data_start
-08048330 t deregister_tm_clones
-080483a0 t __do_global_dtors_aux
-08049f0c t __do_global_dtors_aux_fini_array_entry
-0804a018 D __dso_handle
-08049f14 d _DYNAMIC
-0804a040 D _edata
-0804a044 B _end
-08048454 T _fini
-08048468 R _fp_hw
-080483c0 t frame_dummy
-08049f08 t __frame_dummy_init_array_entry
-08048530 r __FRAME_END__
-0804a000 d _GLOBAL_OFFSET_TABLE_
-         w __gmon_start__
-0804a01c d hello
-08048294 T _init
-08049f0c t __init_array_end
-08049f08 t __init_array_start
-0804846c R _IO_stdin_used
-00000006 a IPPROTO_TCP
-         w _ITM_deregisterTMCloneTable
-         w _ITM_registerTMCloneTable
-08049f10 d __JCR_END__
-08049f10 d __JCR_LIST__
-         w _Jv_RegisterClasses
-08048450 T __libc_csu_fini
-080483f0 T __libc_csu_init
-         U __libc_start_main@@GLIBC_2.0
-0804a029 D main
-00000001 a MAP_SHARED
-00000001 a PROT_READ
-08048360 t register_tm_clones
-00000002 a SEEK_END
-00000001 a SOCK_STREAM
-080482f0 T _start
-00000001 a STDOUT
-00000006 a SYS_close
-0000003f a SYS_dup2
-0000000b a SYS_execve
-00000001 a SYS_exit
-00000002 a SYS_fork
-00000013 a SYS_lseek
-0000005a a SYS_mmap
-0000005b a SYS_munmap
-00000005 a SYS_open
-00000066 a SYS_socketcall
-00000005 a SYS_socketcall_accept
-00000002 a SYS_socketcall_bind
-00000004 a SYS_socketcall_listen
-00000001 a SYS_socketcall_socket
-00000004 a SYS_write
-0804a040 D __TMC_END__
-08048320 T __x86.get_pc_thunk.bx
+	>对于lab1_ex0，输出的符号信息为：
+	00000002 a AF_INET
+	0804a040 B __bss_start
+	0804a040 b completed.7181
+	0804a014 D __data_start
+	0804a014 W data_start
+	08048330 t deregister_tm_clones
+	080483a0 t __do_global_dtors_aux
+	08049f0c t __do_global_dtors_aux_fini_array_entry
+	0804a018 D __dso_handle
+	08049f14 d _DYNAMIC
+	0804a040 D _edata
+	0804a044 B _end
+	08048454 T _fini
+	08048468 R _fp_hw
+	080483c0 t frame_dummy
+	08049f08 t __frame_dummy_init_array_entry
+	08048530 r __FRAME_END__
+	0804a000 d _GLOBAL_OFFSET_TABLE_
+	         w __gmon_start__
+	0804a01c d hello
+	08048294 T _init
+	08049f0c t __init_array_end
+	08049f08 t __init_array_start
+	0804846c R _IO_stdin_used
+	00000006 a IPPROTO_TCP
+	         w _ITM_deregisterTMCloneTable
+	         w _ITM_registerTMCloneTable
+	08049f10 d __JCR_END__
+	08049f10 d __JCR_LIST__
+	         w _Jv_RegisterClasses
+	08048450 T __libc_csu_fini
+	080483f0 T __libc_csu_init
+	         U __libc_start_main@@GLIBC_2.0
+	0804a029 D main
+	00000001 a MAP_SHARED
+	00000001 a PROT_READ
+	08048360 t register_tm_clones
+	00000002 a SEEK_END
+	00000001 a SOCK_STREAM
+	080482f0 T _start
+	00000001 a STDOUT
+	00000006 a SYS_close
+	0000003f a SYS_dup2
+	0000000b a SYS_execve
+	00000001 a SYS_exit
+	00000002 a SYS_fork
+	00000013 a SYS_lseek
+	0000005a a SYS_mmap
+	0000005b a SYS_munmap
+	00000005 a SYS_open
+	00000066 a SYS_socketcall
+	00000005 a SYS_socketcall_accept
+	00000002 a SYS_socketcall_bind
+	00000004 a SYS_socketcall_listen
+	00000001 a SYS_socketcall_socket
+	00000004 a SYS_write
+	0804a040 D __TMC_END__
+	08048320 T __x86.get_pc_thunk.bx
 
  - file:用来识别文件类型，也可用来辨别一些文件的编码格式。它是通过查看文件的头部信息来获取文件类型，而不是像Windows通过扩展名来确定文件类型的。
 >对于lab1_ex0，输出的文件类型信息为：
