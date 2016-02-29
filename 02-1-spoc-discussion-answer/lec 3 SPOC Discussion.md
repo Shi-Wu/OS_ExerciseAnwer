@@ -3,7 +3,7 @@
 ## 第三讲 启动、中断、异常和系统调用-思考题
 
 ## 3.4 linux系统调用分析
- 1. 通过分析[lab1_ex0](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex0.md)了解Linux应用的系统调用编写和含义。(w2l1)
+#### 1. 通过分析[lab1_ex0](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex0.md)了解Linux应用的系统调用编写和含义。(w2l1)
 
  - objdump:用于显示二进制文件信息，-S选项表明其尽可能反汇编出源代码。
 
@@ -89,10 +89,9 @@ lab1-ex0.exe: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamica
 - 把字符串的起始地址传入ecx寄存器
 - 把字符串的长度传入edx寄存器
 - 最后使用int进行中断
- 1. 通过调试[lab1_ex1](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex1.md)了解Linux应用的系统调用执行过程。(w2l1)
- 
- - strace用途：strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
 
+#### 2. 通过调试[lab1_ex1](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex1.md)了解Linux应用的系统调用执行过程。(w2l1)
+ - strace用途：strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
  - 系统调用过程：系统调用时，首先会产生中断，由用户态切换到内核态，操作系统会根据中断号访问中断向量表，然后会进入中断处理，再根据系统调用表进行系统函数调用，系统函数对硬件进行访问完成相应功能，最后返回调用结果。
  
 >系统函数意义：
@@ -101,13 +100,13 @@ lab1-ex0.exe: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamica
 - fstat由文件描述词取得文件状态
 - execve在父进程中fork一个子进程，在子进程中调用exec函数启动新的程序
 - arch_prctl设置架构特定的线程状态
-
 - 所以进行printf时，会对用户态的内存进行一个内存映射，然后会打开一个子进程，打开标准输入输出进行读入和输出
-
+...
 
 ## 3.5 ucore系统调用分析
- 1. ucore的系统调用中参数传递代码分析。
+####1. ucore的系统调用中参数传递代码分析。
 由user/libs/syscall.c可以看到用户态系统调用的代码：
+```
 static inline int
 syscall(int num, ...) {
     va_list ap;
@@ -132,8 +131,10 @@ syscall(int num, ...) {
         : "cc", "memory");
     return ret;
 }
+```
 可以看到系统调用的参数在用户态是通过内联汇编的方式传递到内核态处理的。
 由kern/syscall/syscall.c可以看到内核态系统调用的代码：
+```
 void
 syscall(void) {
     struct trapframe *tf = current->tf;
@@ -154,6 +155,7 @@ syscall(void) {
     panic("undefined syscall %d, pid = %d, name = %s.\n",
             num, current->pid, current->name);
 }
+```
 系统调用的类型（中断号）由tf_regs.reg_eax确定，其他参数的传递通过剩下的通用寄存器来赋值得到。
 
  1. ucore的系统调用中返回结果的传递代码分析。
