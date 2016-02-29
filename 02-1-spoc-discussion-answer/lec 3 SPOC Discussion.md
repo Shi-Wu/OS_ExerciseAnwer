@@ -175,5 +175,33 @@ sys_getpid(uint32_t arg[]) {
 
 
 #### 4. 以ucore lab8的answer为例，尝试修改并运行ucore OS kernel代码，使其具有类似Linux应用工具`strace`的功能，即能够显示出应用程序发出的系统调用，从而可以分析ucore应用的系统调用执行过程。
- 
+ 大体的思路是在内核态syscall(void)函数内，num值即为系统调用号，将其输出到控制台即可。
+```
+void
+syscall(void) {
+    struct trapframe *tf = current->tf;
+    uint32_t arg[5];
+    int num = tf->tf_regs.reg_eax;
+    cprintf("Sys No: %d", num);			// Added line.
+    if (num >= 0 && num < NUM_SYSCALLS) {
+        if (syscalls[num] != NULL) {
+            arg[0] = tf->tf_regs.reg_edx;
+            arg[1] = tf->tf_regs.reg_ecx;
+            arg[2] = tf->tf_regs.reg_ebx;
+            arg[3] = tf->tf_regs.reg_edi;
+            arg[4] = tf->tf_regs.reg_esi;
+            tf->tf_regs.reg_eax = syscalls[num](arg);
+            return ;
+        }
+    }
+    print_trapframe(tf);
+    panic("undefined syscall %d, pid = %d, name = %s.\n",
+            num, current->pid, current->name);
+}
+```
+但在实际编译lab8_answer时报错，
+```
+make: *** No rule to make target 'disk0', needed by 'bin/sfs.img'. Stop.
+```
+暂未解决（使用的是virtualbox安装的老师所给的已配置好的vdi硬盘镜像）
  
