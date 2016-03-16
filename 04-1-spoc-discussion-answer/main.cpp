@@ -31,7 +31,10 @@ void loadDisk(string inTxt){
 	in.close();
 }
 int getContent1(int offset){
+	cout << "    -->pde index:0x"<< hex <<offset ; 
 	int val = mem[0x6c][offset];
+	cout << " pde content:( valide  "<< (val>>7) <<" , " 
+	<< "pfn 0x" << hex << (val&127) << " )" << endl;
 	if (val >> 7 == 0){
 		return -1;
 	}
@@ -39,9 +42,13 @@ int getContent1(int offset){
 }
 int getContent2(int num , int offset){
 	if (num == -1){
-		return -1;
+		cout << "        --> Fault (page directory entry not valid)" << endl;
+		return -2;
 	}
+	cout << "            -->pte index:0x"<< hex <<offset ; 
 	int val = mem[num][offset];
+	cout << " pte content:( valide  "<< (val>>7) <<" , " 
+	<< "pfn 0x" << hex << (val&127) << " )" << endl;
 	if (val >> 7 == 0){
 		if (val == 0x7f){
 			return -1;
@@ -55,18 +62,21 @@ int getContent2(int num , int offset){
 	return val&127;
 }
 int getValue(int num,  int offset){
+	if (num == -2) return 0;
 	if (num == -1){
-		cout <<"fault"<<endl;
+		cout <<"        -->fault"<<endl;
 		return -1;
 	}
 	int val;
 	if (inD){
 		val = disk[num][offset];
+		cout <<"            -->the val in Disk is " << "0x" <<hex<<val << endl;
 	}
 	else{
 		val = mem[num][offset];
+		cout <<"             -->the val in Mem is " << "0x" <<hex<<val << endl;
 	}
-	cout <<"the val is " << "0x" <<hex<<val << endl;
+	
 	return val;
 }
 int main(){
@@ -74,8 +84,9 @@ int main(){
 	loadDisk("disk.txt");
 	int vd , hi, mi, lo; 
 	while(true){
-		cout << "please input:";
+		cout << "please input virtual address:";
 		cin>>hex>>vd;
+		cout << "virtual address "<<hex << vd << endl;
 		hi = vd >> 10;
 		mi = (vd & 992) >> 5;
 		lo = vd & 31;	
