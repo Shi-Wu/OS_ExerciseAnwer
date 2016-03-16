@@ -3,7 +3,11 @@
 #include <fstream>
 using namespace std;
 int mem[128][32];
-void load(string inTxt){
+int disk[128][32];
+
+int inD = 0;
+
+void loadMem(string inTxt){
 	ifstream in(inTxt.c_str());
 	int temp;
 	for(int i = 0 ; i < 128 ; i++){
@@ -12,9 +16,22 @@ void load(string inTxt){
 			mem[i][j] = temp;
 		}
 	}
+	in.close();
+}
+
+void loadDisk(string inTxt){
+	ifstream in(inTxt.c_str());
+	int temp;
+	for(int i = 0 ; i < 128 ; i++){
+		for(int j = 0 ; j < 32 ; j++){
+			in >> hex >> temp;
+			disk[i][j] = temp;
+		}
+	}
+	in.close();
 }
 int getContent1(int offset){
-	int val = mem[0x11][offset];
+	int val = mem[0x6c][offset];
 	if (val >> 7 == 0){
 		return -1;
 	}
@@ -26,8 +43,15 @@ int getContent2(int num , int offset){
 	}
 	int val = mem[num][offset];
 	if (val >> 7 == 0){
-		return -1;
+		if (val == 0x7f){
+			return -1;
+		}
+		else{
+			inD = 1;
+			return val&127;
+		}
 	}
+	inD = 0;
 	return val&127;
 }
 int getValue(int num,  int offset){
@@ -35,12 +59,19 @@ int getValue(int num,  int offset){
 		cout <<"fault"<<endl;
 		return -1;
 	}
-	int val = mem[num][offset];
+	int val;
+	if (inD){
+		val = disk[num][offset];
+	}
+	else{
+		val = mem[num][offset];
+	}
 	cout <<"the val is " << "0x" <<hex<<val << endl;
 	return val;
 }
 int main(){
-	load("in.txt");
+	loadMem("mem.txt");
+	loadDisk("disk.txt");
 	int vd , hi, mi, lo; 
 	while(true){
 		cout << "please input:";
