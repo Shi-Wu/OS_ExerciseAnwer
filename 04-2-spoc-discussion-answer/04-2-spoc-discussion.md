@@ -25,6 +25,74 @@
 (2)（spoc）根据你的`学号 mod 4`的结果值，确定选择四种页面置换算法（0：LRU置换算法，1:改进的clock 页置换算法，2：工作集页置换算法，3：缺页率置换算法）中的一种来设计一个应用程序（可基于python, ruby, C, C++，LISP等）模拟实现，并给出测试。请参考如python代码或独自实现。
  - [页置换算法实现的参考实例](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab3/page-replacement-policy.py)
 
+早先实现的LRU算法：
+
+```
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+int lackNum = 0;
+int maxPageNum = 3;
+
+class Stack{
+private:
+	int seq;
+	int page[100];
+public:
+	Stack(){seq = 0;memset(page,0,100);}
+	void access(int pagenum){
+		for(int i = 0; i < seq; i++){
+			if(page[i] == pagenum){
+				for(int j = i; j < seq-1; j++){
+					page[j] = page[j+1];
+				}
+				page[seq-1] = pagenum;
+				return;	
+			}	
+		}
+		lackNum ++;
+		if(seq < maxPageNum){
+			cout << "lack of page " << pagenum << "; "
+				<< "no page in memory is replaced.\n";
+			page[seq++] = pagenum;
+			return;
+		}
+		cout << "lack of page " << pagenum << "; "
+			<< "the page in memory that is replaced is page: " 
+			<< page[0] << endl;
+		for(int j = 0; j < maxPageNum-1; j++){
+			page[j] = page[j+1];
+		}
+		page[maxPageNum-1] = pagenum;
+		return;
+	}
+	void showpages()
+	{
+		cout << "stack : " ;
+		for(int i = 0; i < seq; i++)
+			cout << page[i] << " ";
+		cout << endl;
+	}
+};
+
+int main(){
+	int pageNum;
+	Stack *stack = new Stack();
+
+	while(1){
+		cout << "Input page num:";
+		stack->access(pageNum);
+		stack->showpages();
+	}
+	
+	cout << lackNum << endl;
+	return 0;
+}
+```
+
 缺页率置换算法（C++）：
 ```
 #include <iostream>
@@ -149,74 +217,6 @@ while 1:
 			del work_list[0]
 		print "Fault." 
 	print work_list
-```
-
-早先实现的LRU算法：
-
-```
-#include <iostream>
-#include <cstdlib>
-#include <cstring>
-
-using namespace std;
-
-int lackNum = 0;
-int maxPageNum = 3;
-
-class Stack{
-private:
-	int seq;
-	int page[100];
-public:
-	Stack(){seq = 0;memset(page,0,100);}
-	void access(int pagenum){
-		for(int i = 0; i < seq; i++){
-			if(page[i] == pagenum){
-				for(int j = i; j < seq-1; j++){
-					page[j] = page[j+1];
-				}
-				page[seq-1] = pagenum;
-				return;	
-			}	
-		}
-		lackNum ++;
-		if(seq < maxPageNum){
-			cout << "lack of page " << pagenum << "; "
-				<< "no page in memory is replaced.\n";
-			page[seq++] = pagenum;
-			return;
-		}
-		cout << "lack of page " << pagenum << "; "
-			<< "the page in memory that is replaced is page: " 
-			<< page[0] << endl;
-		for(int j = 0; j < maxPageNum-1; j++){
-			page[j] = page[j+1];
-		}
-		page[maxPageNum-1] = pagenum;
-		return;
-	}
-	void showpages()
-	{
-		cout << "stack : " ;
-		for(int i = 0; i < seq; i++)
-			cout << page[i] << " ";
-		cout << endl;
-	}
-};
-
-int main(){
-	int pageNum;
-	Stack *stack = new Stack();
-
-	while(1){
-		cout << "Input page num:";
-		stack->access(pageNum);
-		stack->showpages();
-	}
-	
-	cout << lackNum << endl;
-	return 0;
-}
 ```
 
 ## 扩展思考题
