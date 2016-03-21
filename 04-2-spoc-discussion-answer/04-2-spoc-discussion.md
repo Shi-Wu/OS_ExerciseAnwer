@@ -28,17 +28,18 @@
 学号：2013011304
 算法：（2013011304 mod 4 = 0）LRU算法
 代码：（C++）
+
 ```
-#include <cstdlib>
 #include <iostream>
+#include <cstdlib>
 #include <cstring>
 
 using namespace std;
 
-int lack_of_page = 0;
-int mem_pages = 3;
-class Stack{
+int lackNum = 0;
+int maxPageNum = 3;
 
+class Stack{
 private:
 	int seq;
 	int page[100];
@@ -54,8 +55,8 @@ public:
 				return;	
 			}	
 		}
-		lack_of_page ++;
-		if(seq < mem_pages){
+		lackNum ++;
+		if(seq < maxPageNum){
 			cout << "lack of page " << pagenum << "; "
 				<< "no page in memory is replaced.\n";
 			page[seq++] = pagenum;
@@ -64,10 +65,10 @@ public:
 		cout << "lack of page " << pagenum << "; "
 			<< "the page in memory that is replaced is page: " 
 			<< page[0] << endl;
-		for(int j = 0; j < mem_pages-1; j++){
+		for(int j = 0; j < maxPageNum-1; j++){
 			page[j] = page[j+1];
 		}
-		page[mem_pages-1] = pagenum;
+		page[maxPageNum-1] = pagenum;
 		return;
 	}
 	void showpages()
@@ -80,15 +81,16 @@ public:
 };
 
 int main(){
-
-	int page;
+	int pageNum;
 	Stack *stack = new Stack();
-	while(cin >> page){
-		stack->access(page);
+
+	while(1){
+		cout << "Input page num:";
+		stack->access(pageNum);
 		stack->showpages();
 	}
 	
-	cout << lack_of_page << endl;
+	cout << lackNum << endl;
 	return 0;
 }
 ```
