@@ -73,7 +73,7 @@ public:
 	}
 	void showpages()
 	{
-		cout << "the pages in memory are :\t" ;
+		cout << "stack : " ;
 		for(int i = 0; i < seq; i++)
 			cout << page[i] << " ";
 		cout << endl;
