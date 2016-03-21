@@ -1,4 +1,6 @@
 
+# 每次输入一个访问页号
+
 WIN_SIZE = 4
 
 work_list = []

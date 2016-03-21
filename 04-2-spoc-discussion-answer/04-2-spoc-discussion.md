@@ -24,10 +24,134 @@
 
 (2)（spoc）根据你的`学号 mod 4`的结果值，确定选择四种页面置换算法（0：LRU置换算法，1:改进的clock 页置换算法，2：工作集页置换算法，3：缺页率置换算法）中的一种来设计一个应用程序（可基于python, ruby, C, C++，LISP等）模拟实现，并给出测试。请参考如python代码或独自实现。
  - [页置换算法实现的参考实例](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab3/page-replacement-policy.py)
- 
-学号：2013011304
-算法：（2013011304 mod 4 = 0）LRU算法
-代码：（C++）
+
+缺页率置换算法（C++）：
+```
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+
+using namespace std;
+
+int lack_of_page = 0;
+int mem_pages = 3;
+
+int t_start = 0,t_end = 0,t_now = 0;
+int T = 2;
+
+class List{
+private:
+	int seq;
+	int page[100][2];
+public:
+	List(){
+		seq = 0;
+		memset(page , 0 , sizeof(page));
+	}
+
+	void access(int pagenum){
+		t_now++;
+		for(int i = 0; i < seq; i++){
+			if(page[i][0] == pagenum){
+				page[i][1] = 1;
+				return;	
+			}	
+		}
+
+		lack_of_page ++;
+
+		t_end = t_now;
+		//cout << t_end - t_start << endl;
+
+		if (t_end - t_start > T){
+
+			for (int i = 0 ; i < seq ; i++){
+				if ( page[i][1] == 0 ){
+					for (int j = i ; j < seq-1 ; j++){
+						page[j][0] = page[j+1][0];
+						page[j][1] = page[j+1][1];
+					}
+					seq--;
+					i--;
+				}
+
+			}
+			for (int i = 0 ; i < seq ; i++){
+				page[i][1] = 0;
+			}
+
+			page[seq][0] = pagenum;
+			page[seq][1] = 1;
+			seq++;
+
+		}
+
+		else{
+			for (int i = 0 ; i < seq ; i++){
+				page[i][1] = 0;
+			}
+			page[seq][0] = pagenum;
+			page[seq][1] = 1;
+			seq++;
+		}
+		t_start = t_end;
+		return;
+	}
+
+	void showpages()
+	{
+		cout << "the pages in memory are :\t" ;
+		for(int i = 0; i < seq; i++)
+			//cout <<"(" <<page[i][0]<<","<<page[i][1]<<")" << " ";
+			cout <<page[i][0]<<" ";
+		cout << endl;
+	}
+};
+
+int main(){
+	int page;
+	List *list = new List();
+	
+	while(1){
+		cout << "Input page num:";
+		cin >> page;
+		if (page == -1) break;
+		list->access(page);
+		list->showpages();
+	}
+	
+	cout <<"lack num:"<< lack_of_page << endl;
+	return 0;
+}
+```
+
+工作集页置换算法（Python）:
+```
+# 每次输入一个访问页号
+WIN_SIZE = 4
+work_list = []
+series = []
+while 1:
+	a = input("Access: ")
+	series.append(a)
+	if a in work_list:
+		if(work_list[0] == a):
+			work_list.append(a)
+			del work_list[0]
+		else:
+			del work_list[0]
+		print "Successed."
+	else:
+		if len(work_list)<WIN_SIZE:
+			work_list.append(a)
+		else:
+			work_list.append(a)
+			del work_list[0]
+		print "Fault." 
+	print work_list
+```
+
+早先实现的LRU算法：
 
 ```
 #include <iostream>
