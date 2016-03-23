@@ -1,7 +1,7 @@
 
 ##(1)(spoc) 请参考lab3_result的代码，思考如何在lab3_results中实现clock算法，给出你的概要设计方案。可4人一个小组。要求说明你的方案中clock算法与LRU算法上相比，潜在的性能差异性。进而说明在lab3的LRU算法实现的可能性评价（给出理由）。
 ###在lab3_results中实现clock算法的设计概要
-  > 相关结构可以参见swap_fifo.c，其中需要重新编写的代码有
+    相关结构可以参见swap_fifo.c，其中需要重新编写的代码有
     _fifo_map_swappable => _clock_map_swappable
     _fifo_swap_out_victim => _clock_swap_out_victim
     增加另一个global variable: list_entry_t pra_list_clock 表示当前时钟指针指向位置，当然还可以修改mm_struct，使其中包含这个变量，无论如何只需要能够获取到前一次的clock位置就可以了
