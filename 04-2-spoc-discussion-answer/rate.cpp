@@ -19,7 +19,6 @@ public:
 		seq = 0;
 		memset(page , 0 , sizeof(page));
 	}
-
 	void access(int pagenum){
 		t_now++;
 		for(int i = 0; i < seq; i++){
@@ -28,14 +27,10 @@ public:
 				return;	
 			}	
 		}
-
 		lack_of_page ++;
-
 		t_end = t_now;
 		//cout << t_end - t_start << endl;
-
 		if (t_end - t_start > T){
-
 			for (int i = 0 ; i < seq ; i++){
 				if ( page[i][1] == 0 ){
 					for (int j = i ; j < seq-1 ; j++){
@@ -45,18 +40,15 @@ public:
 					seq--;
 					i--;
 				}
-
 			}
 			for (int i = 0 ; i < seq ; i++){
 				page[i][1] = 0;
 			}
-
 			page[seq][0] = pagenum;
 			page[seq][1] = 1;
 			seq++;
 
 		}
-
 		else{
 			for (int i = 0 ; i < seq ; i++){
 				page[i][1] = 0;
@@ -82,7 +74,6 @@ public:
 int main(){
 	int page;
 	List *list = new List();
-	
 	while(1){
 		cout << "Input page num:";
 		cin >> page;
@@ -90,7 +81,6 @@ int main(){
 		list->access(page);
 		list->showpages();
 	}
-	
 	cout <<"lack num:"<< lack_of_page << endl;
 	return 0;
 }
