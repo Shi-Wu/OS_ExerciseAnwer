@@ -12,6 +12,32 @@ wait_state
 run_link、list_link、hash_link
 ```
 
+查看`kern/process/proc.h`中可以看到`proc_struct`的内容：
+```
+struct proc_struct {
+    enum proc_state state;                      // Process state
+    int pid;                                    // Process ID
+    int runs;                                   // the running times of Proces
+    uintptr_t kstack;                           // Process kernel stack
+    volatile bool need_resched;                 // bool value: need to be rescheduled to release CPU?
+    struct proc_struct *parent;                 // the parent process
+    struct mm_struct *mm;                       // Process's memory management field
+    struct context context;                     // Switch here to run process
+    struct trapframe *tf;                       // Trap frame for current interrupt
+    uintptr_t cr3;                              // CR3 register: the base addr of Page Directroy Table(PDT)
+    uint32_t flags;                             // Process flag
+    char name[PROC_NAME_LEN + 1];               // Process name
+    list_entry_t list_link;                     // Process link list 
+    list_entry_t hash_link;                     // Process hash list
+};
+```
+
+包含了当前进程状态，进程ID，内核堆栈，内存管理的数据结构等等。
+通过hash列表进行分组，每组里面按照双向列表进行组织。
+`proc.c`下的函数基本上都用到了它，比如`proc_run`,`proc_init`,`find_proc`等函数。
+`setup_kstack`,`copy_thread`,`do_fork`需要修改它。
+因为为了创建进程，切换进程，退出进程时需要修改链表结构和链表内的内容。
+
 ### 12.2 进程创建
 
 1. fork()的返回值是唯一的吗？父进程和子进程的返回值是不同的。请找到相应的赋值代码。
