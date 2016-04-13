@@ -390,7 +390,7 @@ do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf) {
      *                 setup the kernel entry point and stack of process
      *   hash_proc:    add proc into proc hash_list
      *   get_pid:      alloc a unique pid for process
-     *   wakeup_proc:  set proc->state = PROC_RUNNABLE
+     *   wakup_proc:   set proc->state = PROC_RUNNABLE
      * VARIABLES:
      *   proc_list:    the process set's list
      *   nr_process:   the number of process set
@@ -401,7 +401,7 @@ do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf) {
     //    3. call copy_mm to dup OR share mm according clone_flag
     //    4. call copy_thread to setup tf & context in proc_struct
     //    5. insert proc_struct into hash_list && proc_list
-    //    6. call wakeup_proc to make the new child process RUNNABLE
+    //    6. call wakup_proc to make the new child process RUNNABLE
     //    7. set ret vaule using child proc's pid
     if ((proc = alloc_proc()) == NULL) {
         goto fork_out;
@@ -510,7 +510,8 @@ load_icode(unsigned char *binary, size_t size) {
 
     int ret = -E_NO_MEM;
     struct mm_struct *mm;
-    //(1) create a new mm for current process
+    //(1)
+    cprintf("\tcreate a new mm for current process!\n");
     if ((mm = mm_create()) == NULL) {
         goto bad_mm;
     }
@@ -518,7 +519,7 @@ load_icode(unsigned char *binary, size_t size) {
     if (setup_pgdir(mm) != 0) {
         goto bad_pgdir_cleanup_mm;
     }
-    //(3) copy TEXT/DATA section, build BSS parts in binary to memory space of process
+    //(3)copy TEXT/DATA section, build BSS parts in binary to memory space of process!;
     struct Page *page;
     //(3.1) get the file header of the bianry program (ELF format)
     struct elfhdr *elf = (struct elfhdr *)binary;
@@ -601,7 +602,8 @@ load_icode(unsigned char *binary, size_t size) {
             start += size;
         }
     }
-    //(4) build user stack memory
+    //(4)
+    cprintf("\tbuild user stack memory");
     vm_flags = VM_READ | VM_WRITE | VM_STACK;
     if ((ret = mm_map(mm, USTACKTOP - USTACKSIZE, USTACKSIZE, vm_flags, NULL)) != 0) {
         goto bad_cleanup_mmap;
@@ -613,11 +615,13 @@ load_icode(unsigned char *binary, size_t size) {
     
     //(5) set current process's mm, sr3, and set CR3 reg = physical addr of Page Directory
     mm_count_inc(mm);
+    cprintf("\tset current process in the user mm!\n");
     current->mm = mm;
     current->cr3 = PADDR(mm->pgdir);
     lcr3(PADDR(mm->pgdir));
 
-    //(6) setup trapframe for user environment
+    //(6)
+    cprintf("\tsetup trapframe for user environment!\n");
     struct trapframe *tf = current->tf;
     memset(tf, 0, sizeof(struct trapframe));
     /* LAB5:EXERCISE1 YOUR CODE
@@ -636,6 +640,7 @@ load_icode(unsigned char *binary, size_t size) {
     tf->tf_eflags = FL_IF;
     ret = 0;
 out:
+
     return ret;
 bad_cleanup_mmap:
     exit_mmap(mm);
@@ -647,7 +652,7 @@ bad_mm:
     goto out;
 }
 
-// do_execve - call exit_mmap(mm)&put_pgdir(mm) to reclaim memory space of current process
+// do_execve - call exit_mmap(mm)&pug_pgdir(mm) to reclaim memory space of current process
 //           - call load_icode to setup new memory space accroding binary prog.
 int
 do_execve(const char *name, size_t len, unsigned char *binary, size_t size) {
@@ -663,6 +668,9 @@ do_execve(const char *name, size_t len, unsigned char *binary, size_t size) {
     memset(local_name, 0, sizeof(local_name));
     memcpy(local_name, name, len);
 
+    cprintf("the user proc will be created!\n");
+
+    cprintf("step 1 : clearing the old proc content!\n");
     if (mm != NULL) {
         lcr3(boot_cr3);
         if (mm_count_dec(mm) == 0) {
@@ -672,11 +680,17 @@ do_execve(const char *name, size_t len, unsigned char *binary, size_t size) {
         }
         current->mm = NULL;
     }
+
+    cprintf("step 2 : load the user code from the disk!\n");
     int ret;
     if ((ret = load_icode(binary, size)) != 0) {
         goto execve_exit;
     }
+    cprintf("\t finished loading the user code!\n");
+
     set_proc_name(current, local_name);
+
+    cprintf("the user proc named %s was created!\n",local_name);
     return 0;
 
 execve_exit:
@@ -780,6 +794,8 @@ kernel_execve(const char *name, unsigned char *binary, size_t size) {
         : "=a" (ret)
         : "i" (T_SYSCALL), "0" (SYS_exec), "d" (name), "c" (len), "b" (binary), "D" (size)
         : "memory");
+    cprintf("what --------------------2------------------------\n");
+    print_stackframe();
     return ret;
 }
 
