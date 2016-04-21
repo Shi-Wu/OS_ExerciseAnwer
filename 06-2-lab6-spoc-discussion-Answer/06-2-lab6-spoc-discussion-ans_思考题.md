@@ -15,5 +15,6 @@
 
 
 ####在 ucore 中，目前Stride是采用无符号的32位整数表示。则BigStride应该取多少，才能保证比较的正确性？
->
->
+>由 STRIDE_MAX – STRIDE_MIN <= PASS_MAX 条件，设进程stride值最小为s，则所有stride值在[s, s+PASS_MAX]内。
+>区间右半部分溢出，不会和左半部分重叠，所以可以以s为基准比较大小关系。因为Priority > 1的限制，所以有STRIDE_MAX – STRIDE_MIN <= BIG_STRIDE。通过设置BIG_STRIDE值就可完成判断。（ucore中设置为0x7FFFFFFF）
+
