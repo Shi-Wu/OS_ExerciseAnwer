@@ -4,14 +4,22 @@ week 9 Mon.
 ####N Processes: Bakery Algorithm
 ####缺少choosing语句会出现的问题：（以两进程为例）两个进程同时进入临界区。
 说明：
+
 有进程0，1，初始 number[0] = number[1] = 0;
+
 赋值，取max，二者都为1，但赋值时间有差。
+
 number[0] = max+1 = 1；
+
 在两个for中，
+
     1的for因为number[1]==0，所以1进入临界区；
+    
     0的for因为number[1]=1了（缺少choosing），pid小所以进入临界区；
+    
 
 choosing的存在就是为了让两个进程都赋值了，再判断。
+
 
 
 ###1.（spoc）阅读简化x86计算机模拟器的使用说明，理解基于简化x86计算机的汇编代码。
