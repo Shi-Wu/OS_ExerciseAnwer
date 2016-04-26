@@ -52,6 +52,7 @@ choosing的存在就是为了让两个进程都赋值了，再判断。
 
 >答：实现了。
 >依据如下 x86.py 中第250行开始
+```
 #
 # SUPPORT FOR LOCKS
 #
@@ -67,7 +68,7 @@ def fetchadd(self, src, value, reg1, reg2):
    old                 = self.memory[tmp]
    self.memory[tmp]    = self.memory[tmp] + self.registers[src] 
    self.registers[src] = old
-
+```
 
 能否设计新的硬件原子操作指令Compare-And-Swap,Fetch-And-Add？
 Compare-And-Swap
