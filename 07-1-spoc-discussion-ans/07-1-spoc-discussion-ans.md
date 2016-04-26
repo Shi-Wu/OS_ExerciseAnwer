@@ -62,7 +62,6 @@ def atomic_exchange(self, src, value, reg1, reg2):
    self.memory[tmp]    = self.registers[src]
    self.registers[src] = old
    return 0
-
 def fetchadd(self, src, value, reg1, reg2):
    tmp                 = value + self.registers[reg1] + self.registers[reg2]
    old                 = self.memory[tmp]
