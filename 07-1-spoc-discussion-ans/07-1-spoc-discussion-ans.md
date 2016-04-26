@@ -1,5 +1,5 @@
 
-week 9 Mon.
+week 10 Mon.
 
 ####N Processes: Bakery Algorithm
 ####缺少choosing语句会出现的问题：（以两进程为例）两个进程同时进入临界区。
