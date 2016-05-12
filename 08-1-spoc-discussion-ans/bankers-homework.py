@@ -43,20 +43,42 @@ class Bankers(object):
     def ExecuteProcess(self,index):
 
         #check if less avaliable than Request
-        # YOUR CODE, YOUR ID
+        # YOUR CODE, YOUR 2013011305
         #check END here
+        for i in range(0, len(self.need[index])):
+            if self.avaliable[i] < self.need[index][i]:
+                return False
 
         #allocating what they need.
-        # YOUR CODE, YOUR ID
+        # YOUR CODE, YOUR 2013011305
         #allocating END here
-        pass
+        for i in range(0, len(self.need[index])):
+            self.allocated[index][i] += self.need[index][i]
+            self.avaliable[i] -= self.need[index][i]
+            self.need[index][i] = 0
+
+        self.avaliable = self.CalcAvaliable()
+        return True
 
     def TempSafeCheckAfterRelease(self):
         #check if at least one request can be done after previous process done. not check whole sequances.
         #if every element of Requests can't accepted after previous process done, this mean it is not safe state
-        # YOUR CODE, YOU ID
+        # YOUR CODE, YOU 2013011305
         #check END here
-        pass
+        for i in range(len(self.need)):
+            finish = True
+            if self.finished[i] == False:
+                finish = False
+                flag = True
+                for j in range(len(self.need[i])):
+                    if self.need[i][j] > self.avaliable[j]:
+                        flag = False
+                        break
+
+                if flag == True:
+                    return True
+
+        return finish
 
     def print_matrixes(self):
         print "_____________________________________________"
