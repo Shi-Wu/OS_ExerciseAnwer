@@ -244,7 +244,17 @@ class fs:
             print 'unlink("%s");' % tfile
 
         inum = self.nameToInum[tfile]
-
+        if self.inodes[inum].refCnt == 1:
+            daddr = self.inodes[inum].getAddr()
+            self.dataFree(daddr)
+            self.inodeFree(inum)
+        else:
+            self.inodes[inum].decRefCnt()
+        pname = getParent(tfile)
+        pinum = self.nameToInum(pname)
+        paddr = self.inodes[pinum].getAddr()
+        self.inodes[pinum].decRefCnt()
+        self.data[paddr].delDirEntry(tfile)
     # YOUR CODE, YOUR ID
         # IF inode.refcnt ==1, THEN free data blocks first, then free inode, ELSE dec indoe.refcnt
         # remove from parent directory: delete from parent inum, delete from parent addr
@@ -263,6 +273,16 @@ class fs:
         # inc parent ref count
         # now add to directory
     # DONE
+        pinum = self.nameToInum(parent)
+        paddr = self.inodes[pinum].getAddr()
+        if self.data[paddr].dirEntryExists(newfile) == true:
+            print 'the newfile exists in this directory!'
+            return -1;
+         tinum = self.nameToInum(target)
+         taddr  = self.inodes[tinum].getAddr()
+         self.inodes[pinum].incRefCnt()
+         self.inodes[tinum].incRefCnt()
+         self.data[inum].addDirEntry(newfile,taddr)
         return tinum
 
     def createFile(self, parent, newfile, ftype):
@@ -276,13 +296,37 @@ class fs:
         # inc parent ref count
         # and add to directory of parent
     # DONE
+        pinum = self.nameToInum(parent)
+        paddr = self.inodes[pinum].getAddr()
+        if self.data[paddr].dirEntryExists(newfile) == true:
+            return -1
+        if(self.data[paddr].getFreeEntries() <= 0):
+            return -1
+        daddr = self.dbitmap.alloc()
+        iaddr = self.ibitmap.alloc()
+        self.data[paddr].addDirEntry(newfile,daddr)
+        if ftype == 'd':
+            self.inodes[iaddr].setAll('d',paddr,2)
+            self.data[daddr].setType('d')
+            self.data[daddr].addDirEntry('.',daddr)
+            self.data[daddr].addDirEntry('..',paddr)
+       else:
+        self.inodes[iaddr].setAll('f',-1,1)
+       self.inodes[paddr].incRefCnt()
         return inum
 
     def writeFile(self, tfile, data):
         inum = self.nameToInum[tfile]
         curSize = self.inodes[inum].getSize()
         dprint('writeFile: inum:%d cursize:%d refcnt:%d' % (inum, curSize, self.inodes[inum].getRefCnt()))
-
+        if curSize != 0:
+            return -1
+        daddr =  self.dbitmap.alloc()
+        if daddr != -1:
+            self.data[daddr].setType('f')
+            self.data[daddr].addData(data)
+        else:
+            return -1
     # YOUR CODE, YOUR ID
         # file is full?
         # no data blocks left
