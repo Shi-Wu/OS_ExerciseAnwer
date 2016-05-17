@@ -14,3 +14,4 @@ week13 2016-05-16(一)
 
 	问题3：实现soft link机制，并设计测试用例说明你实现的正确性。
 
+	[soft.py](https://github.com/HSYLCJ/OS_ExerciseAnwer/blob/master/09-1-spoc-discussion-ans/soft.py)
